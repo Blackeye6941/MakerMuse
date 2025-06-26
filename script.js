@@ -1,9 +1,8 @@
 // const {Tool} = require("langchain/tools");
 // const {SerpAPI}= rerquire("langchain/tools");
-import * as dotenv from 'dotenv';
-dotenv.config();
+require('dotenv').config();
 
-import { GoogleGenAI } from '@google/genai';
+const { GoogleGenAI } = require('@google/genai');
 
 const genAI = new GoogleGenAI({
   apiKey: process.env.GENAI_API_KEY,
@@ -15,7 +14,7 @@ const groundingTool = {
 
 const chats = new Map();
 
-export const botModel = async (userId, input) => {
+const botModel = async (userId, input) => {
   if (!chats.has(userId)) {
     const chat = genAI.chats.create({
       model: 'gemini-2.5-flash',
@@ -40,6 +39,8 @@ export const botModel = async (userId, input) => {
     throw error;
   }
 };
+
+module.exports = { botModel };
 //Code for citation Link(to Be implemented as a seperate function)
 // console.log(res.candidates[0].groundingMetadata);
 
