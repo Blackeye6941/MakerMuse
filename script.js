@@ -41,34 +41,3 @@ const botModel = async (userId, input) => {
 };
 
 module.exports = { botModel };
-//Code for citation Link(to Be implemented as a seperate function)
-// console.log(res.candidates[0].groundingMetadata);
-
-// let text = res.text;
-// const supports = res.candidates[0].groundingMetadata.groundingSupports;
-// const chunks = res.candidates[0].groundingMetadata.groundingChunks;
-
-// const sortedSupports = [...supports].sort(
-//     (a, b) => {
-//         (b.segment?.endIndex ?? 0) - (a.segment?.endIndex ?? 0)
-//     }
-// );
-// for(const support of sortedSupports){
-//     const endIndex = support.segment?.endIndex;
-//     if(endIndex == undefined || !support.groundingChunksIndices?.length){
-//         continue;
-//     }
-//     const links = support.groundingChunksIndices.map(i => {
-//         const uri = chunks[i].web?.uri;
-//         console.log(uri);
-//         if(uri){
-//             return `${i+1} ${uri}`;
-//         }else{
-//             return null
-//         }
-//     })
-//     if(links.length > 0){
-//         const link = links.join(', ');
-//         text = text.slice(0, endIndex) + link + text.slice(endIndex);
-//     }
-// }

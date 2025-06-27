@@ -21,8 +21,10 @@
   "homepage": "https://github.com/Blackeye6941/MakerMuse#readme",
   "dependencies": {
     "@google/genai": "^1.6.0",
+    "@langchain/core": "^0.3.61",
     "@langchain/google-genai": "^0.2.13",
     "cheerio": "^1.1.0",
+    "chromadb": "^3.0.5",
     "discord.js": "^14.20.0",
     "dotenv": "^16.5.0",
     "langchain": "^0.3.29",

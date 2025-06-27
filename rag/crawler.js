@@ -1,7 +1,11 @@
 const puppeteer = require("puppeteer");
 const cheerio = require("cheerio");
 const {URL} = require("url");
-require('dotenv').config();
+const dotenv = require('dotenv');
+const path = require('path');
+
+const envPath = path.resolve(__dirname, '..', '.env');
+dotenv.config({ path: envPath });
 
 const base_URL = process.env.WEB_URL;
 const visited = new Set();
@@ -37,7 +41,7 @@ async function extractLinks(html , currentUrl) {
     return Array.from(links);
 }
 
-async function crawlSite(url, depth=3){
+async function crawlSite(url, depth=6){
     if(depth === 0 || visited.has(url)) {
         console.log("Depth limit reached or already visited:", url);
         return [];
@@ -61,8 +65,5 @@ async function crawlSite(url, depth=3){
     }
     return result;
 }
-(async () => {
-    const result = await crawlSite(base_URL); // You can increase depth if needed
-    console.log("Scraping completed. Total pages scraped:", result.length);
-    console.log("Sample output:", result);
-})();
+
+module.exports = { crawlSite }
