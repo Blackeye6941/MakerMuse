@@ -1,45 +1,68 @@
 const fs = require('fs');
+const {Pinecone} = require('@pinecone-database/pinecone');
 const { GoogleGenerativeAIEmbeddings } = require('@langchain/google-genai');
-const { Document } = require('langchain/document');
-const { Chroma } = require('@langchain/community/vectorstores/chroma');
-
 const dotenv = require('dotenv');
 const path = require('path');
 const envPath = path.resolve(__dirname, '..', '.env');
 dotenv.config({ path: envPath });
 
 
-(async function main(){
-    const raw = fs.readFileSync("chunks.json", "utf-8");
-    const chunks = JSON.parse(raw);
-    const documents = chunks.map(chunk => ( 
-        new Document({
-            pageContent: chunk.pageContent,
-            metadata: chunk.metadata
-        })
-    )); 
-
-    const embeddings = new GoogleGenerativeAIEmbeddings({
-        apiKey: process.env.GENAI_API_KEY,
-        modelName: 'embedding-001'
+async function Embedding() {
+    const chunks = JSON.parse(fs.readFileSync("chunks.json", 'utf-8'));
+    const fixedChunks = chunks.map(chunk => ({
+        id:chunk.metadata.source,
+        metadata:{
+            pageContent:chunk.pageContent
+        }
+    }));
+    //console.log(JSON.stringify(fixedChunks));
+    // const document = chunks.map((chunk) => {
+    //     new Document({
+    //         pageContent: chunk.pageContent,
+    //         metadata: chunk.metadata
+    //     })
+    // });
+    console.log("Document created");
+    const embeddingsGenerator = new GoogleGenerativeAIEmbeddings({
+        modelName: 'embedding-001',
+        apiKey:process.env.GENAI_API_KEY
     });
-    const persistDirectory = "./chroma-db";
-
-    // Ensure the persistence directory exists
-if (!fs.existsSync(persistDirectory)) {
-    fs.mkdirSync(persistDirectory, { recursive: true });
-    console.log(`Created persistence directory: ${persistDirectory}`);
-} else {
-    console.log(`Using existing persistence directory: ${persistDirectory}`);
+const embeddedChunks = [];
+let id=1
+    for (const chunk of chunks) {
+        const embedding = await embeddingsGenerator.embedQuery(chunk.pageContent);
+        embeddedChunks.push({
+            id: `${id}`, 
+            values: embedding,
+            metadata: {
+                pageContent: chunk.pageContent,
+            }
+        });
+        console.log(`Chunk with ID ${`${id}`} embedded`);
+        id++;
+    }
+    console.log("Embedding completed");
+    const pc = new Pinecone({
+        apiKey: process.env.PINECONE_API_KEY
+    });
+    // pc.deleteIndex("tinkerhub");
+    // await pc.createIndex({
+    //     name: "tinkerhub-data",
+    //     dimension: 768,
+    //     metric: 'cosine',
+    //     spec:{
+    //         serverless:{
+    //             cloud: 'aws',
+    //             region:'us-east-1',
+    //         }
+    //     }
+    // });
+    const indexes = await pc.describeIndex("tinkerhub-data");
+    console.log(JSON.stringify(indexes));
+    console.log("Index created");
+    const index = pc.index("tinkerhub-data");
+    console.log("Upserting!!");
+    await index.upsert(embeddedChunks);
 }
 
-    const vectorStore = await Chroma.fromDocuments(documents,
-        embeddings,
-        {
-            collectionName: "tinkerhub knowledge",
-            persistDirectory,
-            persist: true
-        }
-    );
-    console.log("Embedded and saved using google");
-})();
+Embedding().catch(console.error);
