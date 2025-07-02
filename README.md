@@ -1,11 +1,11 @@
 # MakerMuse
 # 🤖 Discord RAG Bot using Google Gemini + Pinecone + LangChain
 
-This project is an intelligent Discord chatbot that uses **Google Gemini** (or other LLMs) with **RAG (Retrieval-Augmented Generation)**, powered by:
+This project is an intelligent Discord chatbot that provides technological insights that uses **Google Gemini** with **RAG (Retrieval-Augmented Generation)**, powered by:
 
 - 🔍 Website scraping + chunking
 - 🧠 Embedding + vector storage in Pinecone
-- 🧑‍💬 Discord interaction using LangChain or LangGraph
+- 🧑‍💬 Discord interaction using LangChain
 
 ---
 
@@ -25,10 +25,15 @@ This project is an intelligent Discord chatbot that uses **Google Gemini** (or o
 |---------------|------------------------|
 | Language Model| Google Gemini / LLaMA |
 | Embedding     | Google Embedding API or LLaMA Embeddings |
-| Vector Store  | Pinecone (can swap with Chroma) |
+| Vector Store  |       Pinecone         |
 | Website Scraping | Puppeteer + Cheerio |
 | Chunking      | LangChain TextSplitter |
 | Bot Framework |       Discord.js       |
 | RAG Engine    | LangChain RAG pipeline |
 
 ---
+
+## Contributers
+[Abhiram AR]()
+[Kevin]()
+
