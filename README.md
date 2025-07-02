@@ -34,6 +34,6 @@ This project is an intelligent Discord chatbot that provides technological insig
 ---
 
 ## Contributers
-[Abhiram AR]()
-[Kevin]()
+- [Abhiram AR](https://github.com/abhi-ananthu)
+- [Kevin](https://github.com/Blackeye6941)
 
