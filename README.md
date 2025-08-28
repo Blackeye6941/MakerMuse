@@ -23,8 +23,8 @@ This project is an intelligent Discord chatbot that provides technological insig
 
 | Layer         | Tech                  |
 |---------------|------------------------|
-| Language Model| Google Gemini / LLaMA |
-| Embedding     | Google Embedding API or LLaMA Embeddings |
+| Language Model| Google Gemini |
+| Embedding     | Google Embedding API  |
 | Vector Store  |       Pinecone         |
 | Website Scraping | Puppeteer + Cheerio |
 | Chunking      | LangChain TextSplitter |
